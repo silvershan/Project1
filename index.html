@@ -13,6 +13,11 @@
 </head>
 
 <body>
+  <header>
+    <div class="navbar navbar-light bg-light justify-content-center">
+    <h1>City of Seattle Crime Data</h1>
+    </div>
+  </header>
 
   <div id="app" class="container">
     <div class="row">
@@ -20,7 +25,8 @@
         <!-- The map goes here -->
         <div id="map" class="map"></div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 map-legend">
+        <h2>CRIME DATA</h2>
         <!-- The layer checkboxes go here -->
         <div class="form-check" v-for="layer in layers" :key="layer.id">
           <!-- label and input elements go here -->
