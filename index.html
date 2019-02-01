@@ -1,14 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Crime Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    
+
+  <div id="app" class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <!-- The map goes here -->
+      <div id="map" class="map"></div>
+    </div>
+    <div class="col-md-3">
+      <!-- The layer checkboxes go here -->
+    </div>
+  </div>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+  <script src="assets/javascript/leaflet/leaflet.js"></script>
+  <script src="assets/javascript/app.js"></script>
+
 </body>
-</html>>
+</html>
