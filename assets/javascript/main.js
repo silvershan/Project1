@@ -194,6 +194,7 @@ new Vue({
         for (var i = 0; i < data.length; i++) {
           console.log(data[i].go_number);
           console.log(data[i].crime_description);
+          console.log(data[i].neighborhood);
         }
       });
     },
