@@ -16,15 +16,16 @@ var zipCodeItem = getZipcodeItem();
 
 function getCoordinates(geometry){
   var swappedArray = [];
-  for (var i = 0; i < geometry.coordinates.length; i++){
+
+  for (var i = 0; i < geometry.coordinates[0].length; i++){
     //console.log(geometry.coordinates[i]);
     // var aux = geometry.coordinates[i][0];
     // geometry.coordinates[i][0] = geometry.coordinates[i][1];
     // geometry.coordinates[i][1] = aux;
     swappedArray.push([
-      geometry.coordinates[i][1],
-      geometry.coordinates[i][0]
-    ]);
+       geometry.coordinates[0][i][1],
+      geometry.coordinates[0][i][0]
+     ]);
   }
   return swappedArray;
 }
