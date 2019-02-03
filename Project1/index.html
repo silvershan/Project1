@@ -28,13 +28,6 @@
       <div class="col-md-3 map-legend">
         <h2>CRIME DATA</h2>
         <!-- The layer checkboxes go here -->
-        <div class="form-check" v-for="layer in layers" :key="layer.id">
-          <!-- label and input elements go here -->
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" v-model="layer.active" @change="layerChanged(layer.id, layer.active)" />
-            {{ layer.name }}
-          </label>
-        </div>
       </div>
     </div>
   </div>
