@@ -10,31 +10,10 @@ $(document).on("click", "#add-input", function() {
   zipCodeItem = getZipcodeItem();
   swappedArray = getCoordinates(zipCodeItem.geometry);
 
-  function callSeattleData() { //Performing an AJAX request with the queryURL
-    $.ajax({
-      url: "https://data.seattle.gov/resource/4fs7-3vj5.json",
-      type: "GET",
-      data: {
-        "$limit": 50,
-        "$$app_token": "6NFQsiYRtqSHKDwDVifkcJEqk"
-      }
-    }).done(function(data) {
-      console.log(data);
-
-      for (var i = 0; i < data.length; i++) {
-
-        console.log(data[i].crime_description);
-        console.log(data[i].neighborhood);
-      }
-    });
-  }
-  callSeattleData();
-
   $('#user-input').val('');
 
   app.updateMap();
   app.initLayers();
-  app.layerChanged(layerId, active);
 
 });
 
@@ -63,28 +42,6 @@ function getCoordinates(geometry) {
   return swappedArray;
 }
 
-// function callSeattleData() { //Performing an AJAX request with the queryURL
-//   $.ajax({
-//     url: "https://data.seattle.gov/resource/4fs7-3vj5.json",
-//     type: "GET",
-//     data: {
-//       "$limit": 50,
-//       "$$app_token": "6NFQsiYRtqSHKDwDVifkcJEqk"
-//     }
-//   }).done(function(data) {
-//     console.log(data);
-//
-//     for (var i = 0; i < data.length; i++) {
-//       if (){
-//
-//       }
-//
-//       console.log(data[i].crime_description);
-//       console.log(data[i].neighborhood);
-//     }
-//   });
-// }
-
 var zipCode = "98101";
 var zipCodeItem = getZipcodeItem();
 var swappedArray = getCoordinates(zipCodeItem.geometry);
@@ -97,8 +54,8 @@ const app = new Vue({
         tileLayer: null,
         layers: [{
           id: 0,
-          name: 'Restaurants',
-          active: false,
+          name: 'Elementary',
+          active: true,
           features: [{
               id: 0,
               name: 'Bogart\'s Smokehouse',
@@ -111,47 +68,93 @@ const app = new Vue({
               type: 'marker',
               coords: [47.6350008, -122.3261532],
             },
-            {
-              id: 2,
-              name: 'Broadway Oyster Bar',
+          ],
+        },
+        {
+          id: 0,
+          name: 'Middle School',
+          active: true,
+          features: [{
+              id: 0,
+              name: 'Bogart\'s Smokehouse',
               type: 'marker',
-              coords: [47.6188362, -122.3947098],
+              coords: [47.6109607, -122.3050322],
             },
             {
-              id: 3,
-              name: 'Charlie Gitto\'s On the Hill',
+              id: 1,
+              name: 'Pappy\'s Smokehouse',
               type: 'marker',
-              coords: [47.617972, -122.3756436],
+              coords: [47.6350008, -122.3261532],
+            },
+          ],
+        },
+        {
+          id: 0,
+          name: 'High School',
+          active: true,
+          features: [{
+              id: 0,
+              name: 'Bogart\'s Smokehouse',
+              type: 'marker',
+              coords: [47.6109607, -122.3050322],
             },
             {
-              id: 4,
-              name: 'Sugarfire',
+              id: 1,
+              name: 'Pappy\'s Smokehouse',
               type: 'marker',
-              coords: [47.6304077, -122.3916921],
+              coords: [47.6350008, -122.3261532],
+            },
+          ],
+        },{
+          id: 0,
+          name: 'Option Elementary',
+          active: true,
+          features: [{
+              id: 0,
+              name: 'Bogart\'s Smokehouse',
+              type: 'marker',
+              coords: [47.6109607, -122.3050322],
             },
             {
-              id: 5,
-              name: 'The Shaved Duck',
+              id: 1,
+              name: 'Pappy\'s Smokehouse',
               type: 'marker',
-              coords: [47.6036282, -122.3381407],
+              coords: [47.6350008, -122.3261532],
+            },
+          ],
+        },{
+          id: 0,
+          name: 'Option High School',
+          active: true,
+          features: [{
+              id: 0,
+              name: 'Bogart\'s Smokehouse',
+              type: 'marker',
+              coords: [47.6109607, -122.3050322],
             },
             {
-              id: 6,
-              name: 'Mango Restaurant',
+              id: 1,
+              name: 'Pappy\'s Smokehouse',
               type: 'marker',
-              coords: [47.6313642, -122.3961267],
+              coords: [47.6350008, -122.3261532],
+            },
+          ],
+        },
+        {
+          id: 0,
+          name: 'Non Standard',
+          active: true,
+          features: [{
+              id: 0,
+              name: 'Bogart\'s Smokehouse',
+              type: 'marker',
+              coords: [47.6109607, -122.3050322],
             },
             {
-              id: 7,
-              name: 'Zia\'s Restaurant',
+              id: 1,
+              name: 'Pappy\'s Smokehouse',
               type: 'marker',
-              coords: [47.6157376, -122.37716],
-            },
-            {
-              id: 8,
-              name: 'Anthonio\'s Taverna',
-              type: 'marker',
-              coords: [47.6143846, -122.380048],
+              coords: [47.6350008, -122.3261532],
             },
           ],
         }, ],
@@ -159,6 +162,7 @@ const app = new Vue({
       mounted() { /* Code to run when app is mounted */
         this.initMap();
         this.initLayers();
+        this.callSchoolData();
       },
 
       methods: { /* Functions for for the map object */
@@ -210,5 +214,23 @@ const app = new Vue({
         }
       });
     },
+    callSchoolData() { //Performing an AJAX request with the queryURL
+      $.ajax({
+        url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
+        type: "GET",
+
+      }).done(function(data) {
+        console.log(data);
+
+        for (var i = 0; i < data.features.length; i++) {
+
+          console.log(data.features[i].attributes.SCHOOL);
+          console.log(data.features[i].attributes.TYPE);
+          console.log(data.features[i].geometry.x);
+          console.log(data.features[i].geometry.y);
+
+        }
+      });
+    }
   },
 });
