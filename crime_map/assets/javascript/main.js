@@ -53,111 +53,76 @@ const app = new Vue({
         map: null,
         tileLayer: null,
         layers: [{
-          id: 0,
-          name: 'Elementary',
-          active: true,
-          features: [{
-              id: 0,
-              name: 'Bogart\'s Smokehouse',
+            id: 0,
+            name: 'Elementary',
+            active: true,
+            features: [{
+              id: '',
+              name: '',
+              grade: '',
               type: 'marker',
-              coords: [47.6109607, -122.3050322],
-            },
-            {
-              id: 1,
-              name: 'Pappy\'s Smokehouse',
+              coords: [],
+            }, ],
+          },
+          {
+            id: 1,
+            name: 'Middle School',
+            active: true,
+            features: [{
+              id: '',
+              name: '',
+              grade: '',
               type: 'marker',
-              coords: [47.6350008, -122.3261532],
-            },
-          ],
-        },
-        {
-          id: 0,
-          name: 'Middle School',
-          active: true,
-          features: [{
-              id: 0,
-              name: 'Bogart\'s Smokehouse',
+              coords: [],
+            }, ],
+          },
+          {
+            id: 2,
+            name: 'High School',
+            active: true,
+            features: [{
+              id: '',
+              name: '',
+              grade: '',
               type: 'marker',
-              coords: [47.6109607, -122.3050322],
-            },
-            {
-              id: 1,
-              name: 'Pappy\'s Smokehouse',
+              coords: [],
+            }, ],
+          }, {
+            id: 3,
+            name: 'Option Elementary',
+            active: true,
+            features: [{
+              id: '',
+              name: '',
+              grade: '',
               type: 'marker',
-              coords: [47.6350008, -122.3261532],
-            },
-          ],
-        },
-        {
-          id: 0,
-          name: 'High School',
-          active: true,
-          features: [{
-              id: 0,
-              name: 'Bogart\'s Smokehouse',
+              coords: [],
+            }, ],
+          }, {
+            id: 4,
+            name: 'Option High School',
+            active: true,
+            features: [{
+              id: '',
+              name: '',
+              grade: '',
               type: 'marker',
-              coords: [47.6109607, -122.3050322],
-            },
-            {
-              id: 1,
-              name: 'Pappy\'s Smokehouse',
+              coords: [],
+            }, ],
+          },
+          {
+            id: 5,
+            name: 'Non Standard',
+            active: true,
+            features: [{
+              id: '',
+              name: '',
+              grade: '',
               type: 'marker',
-              coords: [47.6350008, -122.3261532],
-            },
-          ],
-        },{
-          id: 0,
-          name: 'Option Elementary',
-          active: true,
-          features: [{
-              id: 0,
-              name: 'Bogart\'s Smokehouse',
-              type: 'marker',
-              coords: [47.6109607, -122.3050322],
-            },
-            {
-              id: 1,
-              name: 'Pappy\'s Smokehouse',
-              type: 'marker',
-              coords: [47.6350008, -122.3261532],
-            },
-          ],
-        },{
-          id: 0,
-          name: 'Option High School',
-          active: true,
-          features: [{
-              id: 0,
-              name: 'Bogart\'s Smokehouse',
-              type: 'marker',
-              coords: [47.6109607, -122.3050322],
-            },
-            {
-              id: 1,
-              name: 'Pappy\'s Smokehouse',
-              type: 'marker',
-              coords: [47.6350008, -122.3261532],
-            },
-          ],
-        },
-        {
-          id: 0,
-          name: 'Non Standard',
-          active: true,
-          features: [{
-              id: 0,
-              name: 'Bogart\'s Smokehouse',
-              type: 'marker',
-              coords: [47.6109607, -122.3050322],
-            },
-            {
-              id: 1,
-              name: 'Pappy\'s Smokehouse',
-              type: 'marker',
-              coords: [47.6350008, -122.3261532],
-            },
-          ],
-        }, ],
+              coords: [],
+            }, ],
+          },
+        ],
       },
       mounted() { /* Code to run when app is mounted */
         this.initMap();
@@ -203,34 +168,107 @@ const app = new Vue({
           });
         },
         layerChanged(layerId, active) {
-      /* Show or hide the features in the layer */
-      const layer = this.layers.find(layer => layer.id === layerId);
-      layer.features.forEach((feature) => {
-        /* Show or hide the feature depending on the active argument */
-        if (active) {
-          feature.leafletObject.addTo(this.map);
-        } else {
-          feature.leafletObject.removeFrom(this.map);
-        }
-      });
-    },
-    callSchoolData() { //Performing an AJAX request with the queryURL
-      $.ajax({
-        url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
-        type: "GET",
+          /* Show or hide the features in the layer */
+          const layer = this.layers.find(layer => layer.id === layerId);
+          layer.features.forEach((feature) => {
+            /* Show or hide the feature depending on the active argument */
+            if (active) {
+              feature.leafletObject.addTo(this.map);
+            } else {
+              feature.leafletObject.removeFrom(this.map);
+            }
+          });
+        },
+        callSchoolData() { //Performing an AJAX request with the queryURL
+          $.ajax({
+              url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
+              type: "GET",
 
-      }).done(function(data) {
-        console.log(data);
+            }).done(function(data) {
+                console.log(data);
 
-        for (var i = 0; i < data.features.length; i++) {
+                for (var i = 0; i < data.features.length; i++) {
 
-          console.log(data.features[i].attributes.SCHOOL);
-          console.log(data.features[i].attributes.TYPE);
-          console.log(data.features[i].geometry.x);
-          console.log(data.features[i].geometry.y);
+                  // var schoolFeatures = [{
+                  //   id: data.features[i].attributes.OBJECTID,
+                  //   name: data.features[i].attributes.SCHOOL,
+                  //   grade: data.features[i].attributes.TYPE,
+                  //   type: 'marker',
+                  //   coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                  // }, ];
 
-        }
-      });
-    }
-  },
-});
+                  //console.log(app.layers);
+                  if (data.features[i].attributes.TYPE === "Elementary") {
+                    app.layers.push(
+                      {
+                        id: data.features[i].attributes.OBJECTID,
+                        name: data.features[i].attributes.SCHOOL,
+                        grade: data.features[i].attributes.TYPE,
+                        type: 'marker',
+                        coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                      }
+                    )
+                  } else if (data.features[i].attributes.TYPE === "Middle School") {
+                      app.layers.push(
+                        {
+                          id: data.features[i].attributes.OBJECTID,
+                          name: data.features[i].attributes.SCHOOL,
+                          grade: data.features[i].attributes.TYPE,
+                          type: 'marker',
+                          coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                        }
+                      )
+                    } else if (data.features[i].attributes.TYPE === "High School") {
+                        app.layers.push(
+                          {
+                            id: data.features[i].attributes.OBJECTID,
+                            name: data.features[i].attributes.SCHOOL,
+                            grade: data.features[i].attributes.TYPE,
+                            type: 'marker',
+                            coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                          }
+                        )
+                      } else if (data.features[i].attributes.TYPE === "Option Elementary") {
+                          app.layers.push(
+                            {
+                              id: data.features[i].attributes.OBJECTID,
+                              name: data.features[i].attributes.SCHOOL,
+                              grade: data.features[i].attributes.TYPE,
+                              type: 'marker',
+                              coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                            }
+                          )
+                        } else if (data.features[i].attributes.TYPE === "Option High School") {
+                            app.layers.push(
+                              {
+                                id: data.features[i].attributes.OBJECTID,
+                                name: data.features[i].attributes.SCHOOL,
+                                grade: data.features[i].attributes.TYPE,
+                                type: 'marker',
+                                coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                              }
+                            )
+                          } else if (data.features[i].attributes.TYPE === "NonStandard") {
+                              app.layers.push(
+                                {
+                                  id: data.features[i].attributes.OBJECTID,
+                                  name: data.features[i].attributes.SCHOOL,
+                                  grade: data.features[i].attributes.TYPE,
+                                  type: 'marker',
+                                  coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                                }
+                              )
+                            };
+
+
+
+                            // console.log(data.features[i].attributes.SCHOOL);
+                            // console.log(data.features[i].attributes.TYPE);
+                            // console.log(data.features[i].geometry.x);
+                            // console.log(data.features[i].geometry.y);
+
+                          }
+                        });
+                    }
+                  },
+                });
