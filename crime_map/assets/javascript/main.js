@@ -87,6 +87,8 @@ const app = new Vue({
       });
     },
 
+
+
     initMap() { //sets the lat/long and zoom level at document load
       this.map = L.map('map').setView([47.6097, -122.3331], 12);
       this.tileLayer = L.tileLayer(
