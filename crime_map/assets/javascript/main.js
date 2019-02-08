@@ -48,227 +48,219 @@ var swappedArray = getCoordinates(zipCodeItem.geometry);
 
 
 const app = new Vue({
-      el: '#app',
-      data: { /* Data properties will go here */
-        map: null,
-        tileLayer: null,
-        layers: [{
-            id: 0,
-            name: 'Elementary',
-            active: true,
-            features: [{
-              id: '',
-              name: '',
-              grade: '',
-              type: 'marker',
-              coords: [],
-            }, ],
-          },
-          {
-            id: 1,
-            name: 'Middle School',
-            active: true,
-            features: [{
-              id: '',
-              name: '',
-              grade: '',
-              type: 'marker',
-              coords: [],
-            }, ],
-          },
-          {
-            id: 2,
-            name: 'High School',
-            active: true,
-            features: [{
-              id: '',
-              name: '',
-              grade: '',
-              type: 'marker',
-              coords: [],
-            }, ],
-          }, {
-            id: 3,
-            name: 'Option Elementary',
-            active: true,
-            features: [{
-              id: '',
-              name: '',
-              grade: '',
-              type: 'marker',
-              coords: [],
-            }, ],
-          }, {
-            id: 4,
-            name: 'Option High School',
-            active: true,
-            features: [{
-              id: '',
-              name: '',
-              grade: '',
-              type: 'marker',
-              coords: [],
-            }, ],
-          },
-          {
-            id: 5,
-            name: 'Non Standard',
-            active: true,
-            features: [{
-              id: '',
-              name: '',
-              grade: '',
-              type: 'marker',
-              coords: [],
-            }, ],
-          },
-        ],
+  el: '#app',
+  data: { /* Data properties will go here */
+    map: null,
+    tileLayer: null,
+    layers: [{
+        id: 0,
+        name: 'Elementary',
+        active: true,
+        features: [{
+          id: '',
+          name: '',
+          grade: '',
+          type: 'marker',
+          coords: [],
+        }, ],
       },
-      mounted() { /* Code to run when app is mounted */
-        this.initMap();
-        this.initLayers();
-        this.callSchoolData();
+      {
+        id: 1,
+        name: 'Middle School',
+        active: true,
+        features: [{
+          id: '',
+          name: '',
+          grade: '',
+          type: 'marker',
+          coords: [],
+        }, ],
       },
+      {
+        id: 2,
+        name: 'High School',
+        active: true,
+        features: [{
+          id: '',
+          name: '',
+          grade: '',
+          type: 'marker',
+          coords: [],
+        }, ],
+      }, {
+        id: 3,
+        name: 'Option Elementary',
+        active: true,
+        features: [{
+          id: '',
+          name: '',
+          grade: '',
+          type: 'marker',
+          coords: [],
+        }, ],
+      }, {
+        id: 4,
+        name: 'Option High School',
+        active: true,
+        features: [{
+          id: '',
+          name: '',
+          grade: '',
+          type: 'marker',
+          coords: [],
+        }, ],
+      },
+      {
+        id: 5,
+        name: 'Non Standard',
+        active: true,
+        features: [{
+          id: '',
+          name: '',
+          grade: '',
+          type: 'marker',
+          coords: [],
+        }, ],
+      },
+    ],
+  },
+  mounted() { /* Code to run when app is mounted */
+    this.initMap();
+    this.initLayers();
+    this.callSchoolData();
+  },
 
-      methods: { /* Functions for for the map object */
+  methods: { /* Functions for for the map object */
 
-        initMap() { //sets the lat/long and zoom level at document load
-          this.map = L.map('map').setView([47.6097, -122.3331], 12);
-          this.tileLayer = L.tileLayer(
-            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
-              maxZoom: 18,
-              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+    initMap() { //sets the lat/long and zoom level at document load
+      this.map = L.map('map').setView([47.6097, -122.3331], 12);
+      this.tileLayer = L.tileLayer(
+        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+        }
+      );
+      this.tileLayer.addTo(this.map);
+      var polygon = L.polygon(swappedArray, {
+        color: 'red'
+      }).addTo(this.map);
+      this.map.fitBounds(polygon.getBounds());
+    },
+    updateMap() {
+      var polygon = L.polygon(swappedArray, {
+        color: 'red'
+      }).addTo(this.map);
+      this.map.fitBounds(polygon.getBounds());
+    },
+    initLayers() {
+      this.layers.forEach((layer) => {
+        // Initialize the layer
+        const markerFeatures = layer.features.filter(feature => feature.type === 'marker');
+        const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
+        markerFeatures.forEach((feature) => {
+          feature.leafletObject = L.marker(feature.coords)
+            .bindPopup(feature.name);
+        });
+        polygonFeatures.forEach((feature) => {
+          feature.leafletObject = L.polygon(feature.coords)
+            .bindPopup(feature.name);
+        });
+      });
+    },
+    layerChanged(layerId, active) {
+      /* Show or hide the features in the layer */
+      const layer = this.layers.find(layer => layer.id === layerId);
+      layer.features.forEach((feature) => {
+        /* Show or hide the feature depending on the active argument */
+        if (active) {
+          feature.leafletObject.addTo(this.map);
+        } else {
+          feature.leafletObject.removeFrom(this.map);
+        }
+      });
+    },
+    callSchoolData() { //Performing an AJAX request with the queryURL
+      $.ajax({
+        url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
+        type: "GET",
+
+      }).done(function(data) {
+        //console.log(data);
+        for (var i = 0; i < app._data.layers.length; i++) {
+          console.log(app._data.layers[i].features);
+          console.log(app.layers[i].name);
+
+          if (app.layers[i].name === "Elementary") {
+
+            for (var i = 0; i < data.features.length; i++) {
+              
+              if (data.features[i].attributes.TYPE === "Elementary") {
+                app._data.layers[i].features.push({
+                  id: data.features[i].attributes.OBJECTID,
+                  name: data.features[i].attributes.SCHOOL,
+                  grade: data.features[i].attributes.TYPE,
+                  type: 'marker',
+                  coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                })
+              }
             }
-          );
-          this.tileLayer.addTo(this.map);
-          var polygon = L.polygon(swappedArray, {
-            color: 'red'
-          }).addTo(this.map);
-          this.map.fitBounds(polygon.getBounds());
-        },
-        updateMap() {
-          var polygon = L.polygon(swappedArray, {
-            color: 'red'
-          }).addTo(this.map);
-          this.map.fitBounds(polygon.getBounds());
-        },
-        initLayers() {
-          this.layers.forEach((layer) => {
-            // Initialize the layer
-            const markerFeatures = layer.features.filter(feature => feature.type === 'marker');
-            const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
-            markerFeatures.forEach((feature) => {
-              feature.leafletObject = L.marker(feature.coords)
-                .bindPopup(feature.name);
-            });
-            polygonFeatures.forEach((feature) => {
-              feature.leafletObject = L.polygon(feature.coords)
-                .bindPopup(feature.name);
-            });
-          });
-        },
-        layerChanged(layerId, active) {
-          /* Show or hide the features in the layer */
-          const layer = this.layers.find(layer => layer.id === layerId);
-          layer.features.forEach((feature) => {
-            /* Show or hide the feature depending on the active argument */
-            if (active) {
-              feature.leafletObject.addTo(this.map);
-            } else {
-              feature.leafletObject.removeFrom(this.map);
-            }
-          });
-        },
-        callSchoolData() { //Performing an AJAX request with the queryURL
-          $.ajax({
-              url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
-              type: "GET",
-
-            }).done(function(data) {
-                console.log(data);
-
-                for (var i = 0; i < data.features.length; i++) {
-
-                  // var schoolFeatures = [{
-                  //   id: data.features[i].attributes.OBJECTID,
-                  //   name: data.features[i].attributes.SCHOOL,
-                  //   grade: data.features[i].attributes.TYPE,
-                  //   type: 'marker',
-                  //   coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                  // }, ];
-
-                  //console.log(app.layers);
-                  if (data.features[i].attributes.TYPE === "Elementary") {
-                    app.layers.push(
-                      {
-                        id: data.features[i].attributes.OBJECTID,
-                        name: data.features[i].attributes.SCHOOL,
-                        grade: data.features[i].attributes.TYPE,
-                        type: 'marker',
-                        coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                      }
-                    )
-                  } else if (data.features[i].attributes.TYPE === "Middle School") {
-                      app.layers.push(
-                        {
-                          id: data.features[i].attributes.OBJECTID,
-                          name: data.features[i].attributes.SCHOOL,
-                          grade: data.features[i].attributes.TYPE,
-                          type: 'marker',
-                          coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                        }
-                      )
-                    } else if (data.features[i].attributes.TYPE === "High School") {
-                        app.layers.push(
-                          {
-                            id: data.features[i].attributes.OBJECTID,
-                            name: data.features[i].attributes.SCHOOL,
-                            grade: data.features[i].attributes.TYPE,
-                            type: 'marker',
-                            coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                          }
-                        )
-                      } else if (data.features[i].attributes.TYPE === "Option Elementary") {
-                          app.layers.push(
-                            {
-                              id: data.features[i].attributes.OBJECTID,
-                              name: data.features[i].attributes.SCHOOL,
-                              grade: data.features[i].attributes.TYPE,
-                              type: 'marker',
-                              coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                            }
-                          )
-                        } else if (data.features[i].attributes.TYPE === "Option High School") {
-                            app.layers.push(
-                              {
-                                id: data.features[i].attributes.OBJECTID,
-                                name: data.features[i].attributes.SCHOOL,
-                                grade: data.features[i].attributes.TYPE,
-                                type: 'marker',
-                                coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                              }
-                            )
-                          } else if (data.features[i].attributes.TYPE === "NonStandard") {
-                              app.layers.push(
-                                {
-                                  id: data.features[i].attributes.OBJECTID,
-                                  name: data.features[i].attributes.SCHOOL,
-                                  grade: data.features[i].attributes.TYPE,
-                                  type: 'marker',
-                                  coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-                                }
-                              )
-                            };
+          }
+        }
 
 
-
-                            // console.log(data.features[i].attributes.SCHOOL);
-                            // console.log(data.features[i].attributes.TYPE);
-                            // console.log(data.features[i].geometry.x);
-                            // console.log(data.features[i].geometry.y);
-
-                          }
-                        });
-                    }
-                  },
-                });
+        // for (var i = 0; i < data.features.length; i++) {
+        //
+        //   if (data.features[i].attributes.TYPE === "Elementary") {
+        //     app.push({
+        //       id: data.features[i].attributes.OBJECTID,
+        //       name: data.features[i].attributes.SCHOOL,
+        //       grade: data.features[i].attributes.TYPE,
+        //       type: 'marker',
+        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+        //     })
+        //   } else if (data.features[i].attributes.TYPE === "Middle School") {
+        //     app.layers.push({
+        //       id: data.features[i].attributes.OBJECTID,
+        //       name: data.features[i].attributes.SCHOOL,
+        //       grade: data.features[i].attributes.TYPE,
+        //       type: 'marker',
+        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+        //     })
+        //   } else if (data.features[i].attributes.TYPE === "High School") {
+        //     app.layers.push({
+        //       id: data.features[i].attributes.OBJECTID,
+        //       name: data.features[i].attributes.SCHOOL,
+        //       grade: data.features[i].attributes.TYPE,
+        //       type: 'marker',
+        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+        //     })
+        //   } else if (data.features[i].attributes.TYPE === "Option Elementary") {
+        //     app.layers.push({
+        //       id: data.features[i].attributes.OBJECTID,
+        //       name: data.features[i].attributes.SCHOOL,
+        //       grade: data.features[i].attributes.TYPE,
+        //       type: 'marker',
+        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+        //     })
+        //   } else if (data.features[i].attributes.TYPE === "Option High School") {
+        //     app.layers.push({
+        //       id: data.features[i].attributes.OBJECTID,
+        //       name: data.features[i].attributes.SCHOOL,
+        //       grade: data.features[i].attributes.TYPE,
+        //       type: 'marker',
+        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+        //     })
+        //   } else if (data.features[i].attributes.TYPE === "NonStandard") {
+        //     app.layers.push({
+        //       id: data.features[i].attributes.OBJECTID,
+        //       name: data.features[i].attributes.SCHOOL,
+        //       grade: data.features[i].attributes.TYPE,
+        //       type: 'marker',
+        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+        //     })
+        //   };
+        // }
+      });
+    }
+  },
+});
