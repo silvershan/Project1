@@ -29,6 +29,11 @@ function getZipcodeItem() {
   return out;
 }
 
+function validateZipCode(elementValue){
+    var zipCodePattern = ("/^\d{5}$|^\d{5}-\d{4}$/");
+    return zipCodePattern.test(elementValue);
+}
+
 function getCoordinates(geometry) {
   var swappedArray = [];
 
