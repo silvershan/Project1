@@ -56,71 +56,35 @@ const app = new Vue({
         id: 0,
         name: 'Elementary',
         active: true,
-        features: [{
-          id: '',
-          name: '',
-          grade: '',
-          type: 'marker',
-          coords: [],
-        }, ],
+        features: [],
       },
       {
         id: 1,
         name: 'Middle School',
         active: true,
-        features: [{
-          id: '',
-          name: '',
-          grade: '',
-          type: 'marker',
-          coords: [],
-        }, ],
+        features: [],
       },
       {
         id: 2,
         name: 'High School',
         active: true,
-        features: [{
-          id: '',
-          name: '',
-          grade: '',
-          type: 'marker',
-          coords: [],
-        }, ],
+        features: [],
       }, {
         id: 3,
         name: 'Option Elementary',
         active: true,
-        features: [{
-          id: '',
-          name: '',
-          grade: '',
-          type: 'marker',
-          coords: [],
-        }, ],
+        features: [],
       }, {
         id: 4,
         name: 'Option High School',
         active: true,
-        features: [{
-          id: '',
-          name: '',
-          grade: '',
-          type: 'marker',
-          coords: [],
-        }, ],
+        features: [],
       },
       {
         id: 5,
         name: 'Non Standard',
         active: true,
-        features: [{
-          id: '',
-          name: '',
-          grade: '',
-          type: 'marker',
-          coords: [],
-        }, ],
+        features: [],
       },
     ],
   },
@@ -170,14 +134,14 @@ const app = new Vue({
     layerChanged(layerId, active) {
       /* Show or hide the features in the layer */
       const layer = this.layers.find(layer => layer.id === layerId);
-      layer.features.forEach((feature) => {
+      app.layer.features.forEach((feature) => {
         /* Show or hide the feature depending on the active argument */
         if (active) {
           feature.leafletObject.addTo(this.map);
         } else {
           feature.leafletObject.removeFrom(this.map);
         }
-      });
+      })
     },
     callSchoolData() { //Performing an AJAX request with the queryURL
       $.ajax({
@@ -187,80 +151,117 @@ const app = new Vue({
       }).done(function(data) {
         //console.log(data);
         for (var i = 0; i < app._data.layers.length; i++) {
-          console.log(app._data.layers[i].features);
-          console.log(app.layers[i].name);
+          //console.log(app._data.layers[i]);
+          // console.log(app._data.layers[i].features);
+          // console.log(app.layers[i].name);
 
           if (app.layers[i].name === "Elementary") {
 
-            for (var i = 0; i < data.features.length; i++) {
-              
-              if (data.features[i].attributes.TYPE === "Elementary") {
+            for (var j = 0; j < data.features.length; j++) {
+              //console.log(data.features[i]);
+              //console.log(data.features[i].attributes.TYPE);
+
+              if (data.features[j].attributes.TYPE === "Elementary") {
+                // console.log(app._data.layers[i].features);
                 app._data.layers[i].features.push({
-                  id: data.features[i].attributes.OBJECTID,
-                  name: data.features[i].attributes.SCHOOL,
-                  grade: data.features[i].attributes.TYPE,
+                  id: data.features[j].attributes.OBJECTID,
+                  name: data.features[j].attributes.SCHOOL,
+                  grade: data.features[j].attributes.TYPE,
                   type: 'marker',
-                  coords: [data.features[i].geometry.y, data.features[i].geometry.x],
+                  coords: [data.features[j].geometry.y, data.features[j].geometry.x],
+                })
+              }
+            }
+          } else if (app.layers[i].name === "Middle School") {
+
+            for (var j = 0; j < data.features.length; j++) {
+              //console.log(data.features[i]);
+              //console.log(data.features[i].attributes.TYPE);
+
+              if (data.features[j].attributes.TYPE === "Middle School") {
+
+                app._data.layers[i].features.push({
+                  id: data.features[j].attributes.OBJECTID,
+                  name: data.features[j].attributes.SCHOOL,
+                  grade: data.features[j].attributes.TYPE,
+                  type: 'marker',
+                  coords: [data.features[j].geometry.y, data.features[j].geometry.x],
+                })
+
+                console.log(app._data.layers[i].features);
+              }
+            }
+          } else if (app.layers[i].name === "High School") {
+
+            for (var j = 0; j < data.features.length; j++) {
+              //console.log(data.features[i]);
+              //console.log(data.features[i].attributes.TYPE);
+
+              if (data.features[j].attributes.TYPE === "High School") {
+                // console.log(app._data.layers[i].features);
+                app._data.layers[i].features.push({
+                  id: data.features[j].attributes.OBJECTID,
+                  name: data.features[j].attributes.SCHOOL,
+                  grade: data.features[j].attributes.TYPE,
+                  type: 'marker',
+                  coords: [data.features[j].geometry.y, data.features[j].geometry.x],
+                })
+              }
+            }
+          } else if (app.layers[i].name === "Option Elementary") {
+
+            for (var j = 0; j < data.features.length; j++) {
+              //console.log(data.features[i]);
+              //console.log(data.features[i].attributes.TYPE);
+
+              if (data.features[j].attributes.TYPE === "Option Elementary") {
+                // console.log(app._data.layers[i].features);
+                app._data.layers[i].features.push({
+                  id: data.features[j].attributes.OBJECTID,
+                  name: data.features[j].attributes.SCHOOL,
+                  grade: data.features[j].attributes.TYPE,
+                  type: 'marker',
+                  coords: [data.features[j].geometry.y, data.features[j].geometry.x],
+                })
+              }
+            }
+          } else if (app.layers[i].name === "Option High School") {
+
+            for (var j = 0; j < data.features.length; j++) {
+              //console.log(data.features[i]);
+              //console.log(data.features[i].attributes.TYPE);
+
+              if (data.features[j].attributes.TYPE === "Option High School") {
+                // console.log(app._data.layers[i].features);
+                app._data.layers[i].features.push({
+                  id: data.features[j].attributes.OBJECTID,
+                  name: data.features[j].attributes.SCHOOL,
+                  grade: data.features[j].attributes.TYPE,
+                  type: 'marker',
+                  coords: [data.features[j].geometry.y, data.features[j].geometry.x],
+                })
+              }
+            }
+          } else if (app.layers[i].name === "Non Standard") {
+
+            for (var j = 0; j < data.features.length; j++) {
+              //console.log(data.features[i]);
+              //console.log(data.features[i].attributes.TYPE);
+
+              if (data.features[j].attributes.TYPE === "NonStandard") {
+                // console.log(app._data.layers[i].features);
+                app._data.layers[i].features.push({
+                  id: data.features[j].attributes.OBJECTID,
+                  name: data.features[j].attributes.SCHOOL,
+                  grade: data.features[j].attributes.TYPE,
+                  type: 'marker',
+                  coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
               }
             }
           }
         }
-
-
-        // for (var i = 0; i < data.features.length; i++) {
-        //
-        //   if (data.features[i].attributes.TYPE === "Elementary") {
-        //     app.push({
-        //       id: data.features[i].attributes.OBJECTID,
-        //       name: data.features[i].attributes.SCHOOL,
-        //       grade: data.features[i].attributes.TYPE,
-        //       type: 'marker',
-        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-        //     })
-        //   } else if (data.features[i].attributes.TYPE === "Middle School") {
-        //     app.layers.push({
-        //       id: data.features[i].attributes.OBJECTID,
-        //       name: data.features[i].attributes.SCHOOL,
-        //       grade: data.features[i].attributes.TYPE,
-        //       type: 'marker',
-        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-        //     })
-        //   } else if (data.features[i].attributes.TYPE === "High School") {
-        //     app.layers.push({
-        //       id: data.features[i].attributes.OBJECTID,
-        //       name: data.features[i].attributes.SCHOOL,
-        //       grade: data.features[i].attributes.TYPE,
-        //       type: 'marker',
-        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-        //     })
-        //   } else if (data.features[i].attributes.TYPE === "Option Elementary") {
-        //     app.layers.push({
-        //       id: data.features[i].attributes.OBJECTID,
-        //       name: data.features[i].attributes.SCHOOL,
-        //       grade: data.features[i].attributes.TYPE,
-        //       type: 'marker',
-        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-        //     })
-        //   } else if (data.features[i].attributes.TYPE === "Option High School") {
-        //     app.layers.push({
-        //       id: data.features[i].attributes.OBJECTID,
-        //       name: data.features[i].attributes.SCHOOL,
-        //       grade: data.features[i].attributes.TYPE,
-        //       type: 'marker',
-        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-        //     })
-        //   } else if (data.features[i].attributes.TYPE === "NonStandard") {
-        //     app.layers.push({
-        //       id: data.features[i].attributes.OBJECTID,
-        //       name: data.features[i].attributes.SCHOOL,
-        //       grade: data.features[i].attributes.TYPE,
-        //       type: 'marker',
-        //       coords: [data.features[i].geometry.y, data.features[i].geometry.x],
-        //     })
-        //   };
-        // }
-      });
-    }
-  },
+      })
+    },
+  }
 });
