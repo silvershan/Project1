@@ -48,3 +48,13 @@ h2 {
   background-size: cover !important;
   background-repeat: no-repeat !important;
 }
+
+/*-- user input error message --*/
+.error {
+  color: red;
+  margin-left: 5px;
+}
+
+label.error {
+  display: inline;
+}

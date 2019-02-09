@@ -1,16 +1,32 @@
 // console.log(geoJson);
 
+//Prevents user from clicking enter and reloading the map
+$(document).ready(function() {
+  $(window).keydown(function(event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
 
-$(document).on("click", "#add-input", function() {
+//Get's a zip code from the user
+$(document).on("click", "#add-input", function(event) {
 
   zipCode = $("#user-input").val();
-
   console.log("zipcode:" + zipCode);
+
+  $(".error").remove(); //adds an error message if user enters nothing in the input
+  if (zipCode.length < 1) {
+    $('form').append('<p class="error">This field is required</p>');
+  } else {
+    $('#user-input').val('');
+  }
+
+  isValidZipCode(zipCode);
 
   zipCodeItem = getZipcodeItem();
   swappedArray = getCoordinates(zipCodeItem.geometry);
-
-  $('#user-input').val('');
 
   app.updateMap();
   app.initLayers();
@@ -29,16 +45,21 @@ function getZipcodeItem() {
   return out;
 }
 
-function validateZipCode(elementValue){
-    var zipCodePattern = ("/^\d{5}$|^\d{5}-\d{4}$/");
-    return zipCodePattern.test(elementValue);
-}
+function isValidZipCode(zip) {
+  var isValid = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+            if (isValid) {
+              // $('form').append('<p class="error">valid Zip Code</p>');
+        } else {
+          $('form').append('<p class="error">Please enter a valid zip code.</p>');
+      }
+    }
+
 
 function getCoordinates(geometry) {
   var swappedArray = [];
 
-  for (var i = 0; i < geometry.coordinates[0].length; i++) {
-
+  for (var i = 0; i < geometry.coordinates[0].length; i++) { //grabbing polygon coordinates from the geoJson files for Seattle neighborhoods
+    //Swapping the lat/long coordinates so they populate the map correctly
     swappedArray.push([
       geometry.coordinates[0][i][1],
       geometry.coordinates[0][i][0]
@@ -60,42 +81,35 @@ const app = new Vue({
     layers: [{
         id: 0,
         name: 'Elementary',
-        active: true,
-        features: [{
-            id: 1000000000,
-            name: 'Bogart\'s Smokehouse',
-            type: 'marker',
-            coords: [47.6109607, -122.3050322],
-          },
-
-        ],
+        active: false,
+        features: [],
       },
       {
         id: 1,
         name: 'Middle School',
-        active: true,
+        active: false,
         features: [],
       },
       {
         id: 2,
         name: 'High School',
-        active: true,
+        active: false,
         features: [],
       }, {
         id: 3,
         name: 'Option Elementary',
-        active: true,
+        active: false,
         features: [],
       }, {
         id: 4,
         name: 'Option High School',
-        active: true,
+        active: false,
         features: [],
       },
       {
         id: 5,
         name: 'Non Standard',
-        active: true,
+        active: false,
         features: [],
       },
     ],
@@ -122,12 +136,14 @@ const app = new Vue({
       }).addTo(this.map);
       this.map.fitBounds(polygon.getBounds());
     },
+
     updateMap() {
       var polygon = L.polygon(swappedArray, {
         color: 'red'
       }).addTo(this.map);
       this.map.fitBounds(polygon.getBounds());
     },
+
     initLayers() {
       this.layers.forEach((layer) => {
         // Initialize the layer
@@ -135,14 +151,15 @@ const app = new Vue({
         const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
         markerFeatures.forEach((feature) => {
           feature.leafletObject = L.marker(feature.coords)
-            .bindPopup(feature.name);
+            .bindPopup(feature.name + "<br>" + feature.street + "<br>" + feature.phone + "<br>" + feature.site)
         });
         polygonFeatures.forEach((feature) => {
           feature.leafletObject = L.polygon(feature.coords)
-            .bindPopup(feature.name);
+            .bindPopup(feature.name + "<br>" + feature.street + "<br>" + feature.phone + "<br>" + feature.site)
         });
       });
     },
+
     layerChanged(layerId, active) {
       /* Show or hide the features in the layer */
       const layer = this.layers.find(layer => layer.id === layerId);
@@ -155,6 +172,7 @@ const app = new Vue({
         }
       })
     },
+
     callSchoolData() { //Performing an AJAX request with the queryURL
       $.ajax({
         url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
@@ -164,13 +182,13 @@ const app = new Vue({
         //console.log(data);
         for (var i = 0; i < app._data.layers.length; i++) {
           //console.log(app._data.layers[i]);
-          // console.log(app._data.layers[i].features);
+          //console.log(app._data.layers[i].features);
           // console.log(app.layers[i].name);
 
           if (app.layers[i].name === "Elementary") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
+              console.log(data.features[i]);
               //console.log(data.features[i].attributes.TYPE);
 
               if (data.features[j].attributes.TYPE === "Elementary") {
@@ -179,6 +197,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -196,6 +217,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -213,6 +237,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -230,6 +257,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -247,6 +277,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -264,6 +297,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
