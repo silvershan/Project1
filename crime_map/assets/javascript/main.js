@@ -144,11 +144,11 @@ const app = new Vue({
         const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
         markerFeatures.forEach((feature) => {
           feature.leafletObject = L.marker(feature.coords)
-            .bindPopup(feature.name);
+            .bindPopup(feature.name + "<br>" + feature.street + "<br>" + feature.phone + "<br>" + feature.site)
         });
         polygonFeatures.forEach((feature) => {
           feature.leafletObject = L.polygon(feature.coords)
-            .bindPopup(feature.name);
+            .bindPopup(feature.name + "<br>" + feature.street + "<br>" + feature.phone + "<br>" + feature.site)
         });
       });
     },
@@ -175,13 +175,13 @@ const app = new Vue({
         //console.log(data);
         for (var i = 0; i < app._data.layers.length; i++) {
           //console.log(app._data.layers[i]);
-          // console.log(app._data.layers[i].features);
+          //console.log(app._data.layers[i].features);
           // console.log(app.layers[i].name);
 
           if (app.layers[i].name === "Elementary") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
+              console.log(data.features[i]);
               //console.log(data.features[i].attributes.TYPE);
 
               if (data.features[j].attributes.TYPE === "Elementary") {
@@ -190,6 +190,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -207,6 +210,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -224,6 +230,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -241,6 +250,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -258,6 +270,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
@@ -275,6 +290,9 @@ const app = new Vue({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
                   grade: data.features[j].attributes.TYPE,
+                  site: data.features[j].attributes.WEBSITE,
+                  street: data.features[j].attributes.ADDRESS,
+                  phone: data.features[j].attributes.PHONE,
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
