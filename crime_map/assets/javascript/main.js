@@ -56,7 +56,14 @@ const app = new Vue({
         id: 0,
         name: 'Elementary',
         active: true,
-        features: [],
+        features: [{
+            id: 1000000000,
+            name: 'Bogart\'s Smokehouse',
+            type: 'marker',
+            coords: [47.6109607, -122.3050322],
+          },
+
+        ],
       },
       {
         id: 1,
@@ -89,9 +96,9 @@ const app = new Vue({
     ],
   },
   mounted() { /* Code to run when app is mounted */
+    this.callSchoolData();
     this.initMap();
     this.initLayers();
-    this.callSchoolData();
   },
 
   methods: { /* Functions for for the map object */
@@ -134,7 +141,7 @@ const app = new Vue({
     layerChanged(layerId, active) {
       /* Show or hide the features in the layer */
       const layer = this.layers.find(layer => layer.id === layerId);
-      app.layer.features.forEach((feature) => {
+      layer.features.forEach((feature) => {
         /* Show or hide the feature depending on the active argument */
         if (active) {
           feature.leafletObject.addTo(this.map);
@@ -162,7 +169,7 @@ const app = new Vue({
               //console.log(data.features[i].attributes.TYPE);
 
               if (data.features[j].attributes.TYPE === "Elementary") {
-                // console.log(app._data.layers[i].features);
+                //console.log(app._data.layers[i].features);
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.SCHOOL,
@@ -187,8 +194,6 @@ const app = new Vue({
                   type: 'marker',
                   coords: [data.features[j].geometry.y, data.features[j].geometry.x],
                 })
-
-                console.log(app._data.layers[i].features);
               }
             }
           } else if (app.layers[i].name === "High School") {
