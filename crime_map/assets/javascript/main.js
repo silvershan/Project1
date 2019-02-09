@@ -23,6 +23,8 @@ $(document).on("click", "#add-input", function(event) {
     $('#user-input').val('');
   }
 
+  isValidZipCode(zipCode);
+
   zipCodeItem = getZipcodeItem();
   swappedArray = getCoordinates(zipCodeItem.geometry);
 
@@ -43,10 +45,15 @@ function getZipcodeItem() {
   return out;
 }
 
-function validateZipCode(elementValue) {
-  var zipCodePattern = ("/^\d{5}$|^\d{5}-\d{4}$/");
-  return zipCodePattern.test(elementValue);
-}
+function isValidZipCode(zip) {
+  var isValid = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+            if (isValid) {
+              // $('form').append('<p class="error">valid Zip Code</p>');
+        } else {
+          $('form').append('<p class="error">Please enter a valid zip code.</p>');
+      }
+    }
+
 
 function getCoordinates(geometry) {
   var swappedArray = [];
@@ -165,7 +172,7 @@ const app = new Vue({
         }
       })
     },
-    
+
     callSchoolData() { //Performing an AJAX request with the queryURL
       $.ajax({
         url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
