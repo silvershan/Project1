@@ -18,7 +18,7 @@ $(document).on("click", "#add-input", function(event) {
 
   $(".error").remove(); //adds an error message if user enters nothing in the input
   if (zipCode.length < 1) {
-    $('form').append('<p class="error">This field is required</p>');
+    $('form').append('<p class="error">This field is required.</p>');
   } else {
     $('#user-input').val('');
   }
@@ -48,7 +48,6 @@ function getZipcodeItem() {
 function isValidZipCode(zip) {
   var isValid = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
             if (isValid) {
-              // $('form').append('<p class="error">valid Zip Code</p>');
         } else {
           $('form').append('<p class="error">Please enter a valid zip code.</p>');
       }
