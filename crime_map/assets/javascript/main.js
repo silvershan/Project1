@@ -1,17 +1,4 @@
-// console.log(geoJson);
-
-//Prevents user from clicking enter and reloading the map
-$(document).ready(function() {
-  $(window).keydown(function(event) {
-    if (event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
-  });
-});
-
-//Get's a zip code from the user
-$(document).on("click", "#add-input", function(event) {
+var handler = function(event) {
 
   zipCode = $("#user-input").val();
   // console.log("zipcode:" + zipCode);
@@ -31,7 +18,21 @@ $(document).on("click", "#add-input", function(event) {
   app.updateMap();
   app.initLayers();
 
+}
+// console.log(geoJson);
+
+// Prevents user from clicking enter and reloading the map
+$(document).ready(function() {
+  $(window).keydown(function(event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      handler();
+      return false;
+    }
+  });
 });
+//Get's a zip code from the user
+$(document).on("click", "#add-input", handler);
 
 
  
