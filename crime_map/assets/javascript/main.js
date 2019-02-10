@@ -151,11 +151,11 @@ const app = new Vue({
         const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
         markerFeatures.forEach((feature) => {
           feature.leafletObject = L.marker(feature.coords)
-            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "'>" + feature.site + "</a>")
+            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "' target='_blank'>" + feature.site + "</a>")
         });
         polygonFeatures.forEach((feature) => {
           feature.leafletObject = L.polygon(feature.coords)
-            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "'>" + feature.site + "</a>")
+            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "' target='_blank'>" + feature.site + "</a>")
         });
       });
     },
