@@ -14,7 +14,7 @@ $(document).ready(function() {
 $(document).on("click", "#add-input", function(event) {
 
   zipCode = $("#user-input").val();
-  console.log("zipcode:" + zipCode);
+  // console.log("zipcode:" + zipCode);
 
   $(".error").remove(); //adds an error message if user enters nothing in the input
   if (zipCode.length < 1) {
@@ -33,6 +33,9 @@ $(document).on("click", "#add-input", function(event) {
 
 });
 
+
+ 
+    
 
 function getZipcodeItem() {
   var out;
@@ -120,7 +123,7 @@ const app = new Vue({
     this.initLayers();
   },
 
-  methods: { /* Functions for for the map object */
+  methods: { /* Functions for the map object */
 
     initMap() { //sets the lat/long and zoom level at document load
       this.map = L.map('map').setView([47.6097, -122.3331], 12);
@@ -135,13 +138,19 @@ const app = new Vue({
         color: '#f2a033'
       }).addTo(this.map);
       this.map.fitBounds(polygon.getBounds());
+      this.currentPolygon = polygon;
     },
-
+    currentPolygon: null,
     updateMap() {
+      if (this.currentPolygon !== null) {
+        this.map.removeLayer(this.currentPolygon);
+      }
+     
       var polygon = L.polygon(swappedArray, {
         color: '#f2a033'
       }).addTo(this.map);
       this.map.fitBounds(polygon.getBounds());
+      this.currentPolygon = polygon;
     },
 
     initLayers() {
@@ -188,7 +197,7 @@ const app = new Vue({
           if (app.layers[i].name === "Elementary") {
 
             for (var j = 0; j < data.features.length; j++) {
-              console.log(data.features[i]);
+              // console.log(data.features[i]);
               //console.log(data.features[i].attributes.TYPE);
 
               if (data.features[j].attributes.TYPE === "Elementary") {
