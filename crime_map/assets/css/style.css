@@ -14,7 +14,7 @@
 hr {
   background-color: white;
   height: 5px !important;
-  opacity: 0.5 !important;
+  opacity: 1 !important;
 }
 
 h1,
@@ -23,7 +23,6 @@ form,
 label,
 #user-input {
   color: white !important;
-  font-family: 'Indie Flower', cursive !important;
 }
 
 .btn {
@@ -36,14 +35,24 @@ h1 {
   font-size: 100px !important;
   background-color: transparent !important;
   font-weight: 500 !important;
+  font-family: 'Indie Flower', cursive !important;
 }
 
 h2 {
   font-size: 50px !important;
 }
 
-.jumbotron {
-  background-image: url("../images/sad.jpg") !important;
+div.jumbotron {
+  background: gray;
+}
+
+div.col-md-3.map-legend {
+  padding: 30px;
+  border: 10px solid white;
+}
+
+body {
+  background-image: url("../images/bus.jpg");
   background-size: cover !important;
   background-repeat: no-repeat !important;
 }
@@ -57,3 +66,4 @@ h2 {
 label.error {
   display: inline;
 }
+
