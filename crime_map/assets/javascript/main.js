@@ -132,14 +132,14 @@ const app = new Vue({
       );
       this.tileLayer.addTo(this.map);
       var polygon = L.polygon(swappedArray, {
-        color: 'red'
+        color: '#f2a033'
       }).addTo(this.map);
       this.map.fitBounds(polygon.getBounds());
     },
 
     updateMap() {
       var polygon = L.polygon(swappedArray, {
-        color: 'red'
+        color: '#f2a033'
       }).addTo(this.map);
       this.map.fitBounds(polygon.getBounds());
     },
@@ -151,11 +151,11 @@ const app = new Vue({
         const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
         markerFeatures.forEach((feature) => {
           feature.leafletObject = L.marker(feature.coords)
-            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + feature.site)
+            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "'>" + feature.site + "</a>")
         });
         polygonFeatures.forEach((feature) => {
           feature.leafletObject = L.polygon(feature.coords)
-            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + feature.site)
+            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "'>" + feature.site + "</a>")
         });
       });
     },
