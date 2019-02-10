@@ -4,6 +4,7 @@
 
 #user-input {
   background-color: transparent !important;
+  font-size:25px !important;
 }
 
 ::placeholder {
@@ -24,6 +25,7 @@ label,
 #user-input {
   color: white !important;
   font-family: 'Indie Flower', cursive !important;
+
 }
 
 .btn {
@@ -43,7 +45,7 @@ h2 {
 }
 
 .jumbotron {
-  background-image: url("../images/sad.jpg") !important;
+  background-image: url("../images/bus.jpg") !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
 }
