@@ -18,7 +18,7 @@
   <header>
     <div class="title-header justify-content-center">
       <div>
-        <h1>Seattle Schools Info</p>
+        <h1>Seattle Schools Info</h1>
           <hr>
           <h2>Find the nearest schools!</h2>
       </div>
@@ -28,9 +28,11 @@
   <div id="app" class="container">
     <div class="row">
       <div class="col-md-9">
+        <div id="background">
         <div id="map" class="map">
           <!-- the map go here -->
         </div>
+      </div>
       </div>
       <div class="col-md-3 map-legend">
         <form id="search-form">
@@ -50,6 +52,11 @@
       </div>
     </div>
   </div>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted credit" style="color:white !important;">Project by <a href="">Lacey Gibbons</a>, <a href="">Shannon Line</a>, and <a href="https://dericson87.github.io/Portfolio/" target='_blank'>Derek Ericson</a>.</p>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
   <script src="assets/javascript/leaflet/leaflet.js"></script>
@@ -58,5 +65,4 @@
   <script src="assets/javascript/main.js"></script>
   </div>
 </body>
-
 </html>
