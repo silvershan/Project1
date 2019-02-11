@@ -1,9 +1,8 @@
 var handler = function(event) {
 
   zipCode = $("#user-input").val();
-  // console.log("zipcode:" + zipCode);
 
-  $(".error").remove(); //adds an error message if user enters nothing in the input
+  $(".error").remove(); 
   if (zipCode.length < 1) {
     $('form').append('<p class="error">This field is required.</p>');
   } else {
@@ -16,19 +15,13 @@ var handler = function(event) {
   swappedArray = getCoordinates(zipCodeItem.geometry);
 
   app.updateMap();
-  // app.layerChanged();
   app.layers.forEach(layer => {
     if (layer.active === true) {
       layer.active = false;
       app.layerChanged(layer.id, layer.active);
     }
   });
-
-
   }
-
-
-// console.log(geoJson);
 
 // Prevents user from clicking enter and reloading the map
 $(document).ready(function() {
@@ -45,7 +38,6 @@ $(document).on("click", "#add-input", handler);
 function getZipcodeItem() {
   var out;
   geoJson.features.forEach(function(zipCodeItem) {
-    //console.log(zipCodeItem.properties.GEOID10 + '===' + zipCode);
     if (zipCodeItem.properties.GEOID10 === zipCode) {
       out = zipCodeItem;
     }
@@ -124,7 +116,6 @@ const app = new Vue({
   mounted() { /* Code to run when app is mounted */
     this.callSchoolData();
     this.initMap();
-   // this.initLayers();
   },
 
   methods: { /* Functions for the map object */
@@ -157,10 +148,6 @@ const app = new Vue({
       this.currentPolygon = polygon;
     },
 
-    initLayers() {
-      
-    },
-
     layerChanged(layerId, active) {
       /* Show or hide the features in the layer */
       const layer = this.layers.find(layer => layer.id === layerId);
@@ -185,19 +172,10 @@ const app = new Vue({
         url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
         type: "GET",
 
-      }).done(function(data) {
-        //console.log(data);
+      }).done(function(data) { 
         for (var i = 0; i < app._data.layers.length; i++) {
-          //console.log(app._data.layers[i]);
-          //console.log(app._data.layers[i].features);
-          // console.log(app.layers[i].name);
-
           if (app.layers[i].name === "Elementary") {
-
             for (var j = 0; j < data.features.length; j++) {
-              // console.log(data.features[i]);
-              //console.log(data.features[i].attributes.TYPE);
-
               if (data.features[j].attributes.TYPE === "Elementary") {
                 //console.log(app._data.layers[i].features);
                 app._data.layers[i].features.push({
@@ -216,11 +194,7 @@ const app = new Vue({
           } else if (app.layers[i].name === "Middle School") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
-              //console.log(data.features[i].attributes.TYPE);
-
               if (data.features[j].attributes.TYPE === "Middle School") {
-
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
@@ -237,11 +211,7 @@ const app = new Vue({
           } else if (app.layers[i].name === "High School") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
-              //console.log(data.features[i].attributes.TYPE);
-
               if (data.features[j].attributes.TYPE === "High School") {
-                // console.log(app._data.layers[i].features);
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
@@ -258,11 +228,8 @@ const app = new Vue({
           } else if (app.layers[i].name === "Option Elementary") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
-              //console.log(data.features[i].attributes.TYPE);
 
               if (data.features[j].attributes.TYPE === "Option Elementary") {
-                // console.log(app._data.layers[i].features);
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
@@ -279,11 +246,9 @@ const app = new Vue({
           } else if (app.layers[i].name === "Option High School") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
-              //console.log(data.features[i].attributes.TYPE);
 
               if (data.features[j].attributes.TYPE === "Option High School") {
-                // console.log(app._data.layers[i].features);
+     
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
@@ -300,11 +265,7 @@ const app = new Vue({
           } else if (app.layers[i].name === "Non Standard") {
 
             for (var j = 0; j < data.features.length; j++) {
-              //console.log(data.features[i]);
-              //console.log(data.features[i].attributes.TYPE);
-
-              if (data.features[j].attributes.TYPE === "NonStandard") {
-                // console.log(app._data.layers[i].features);
+              if (data.features[j].attributes.TYPE === "NonStandard") {             
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
