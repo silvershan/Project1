@@ -53,7 +53,6 @@ function isValidZipCode(zip) {
       }
     }
 
-
 function getCoordinates(geometry) {
   var swappedArray = [];
 
@@ -70,7 +69,6 @@ function getCoordinates(geometry) {
 var zipCode = "98101";
 var zipCodeItem = getZipcodeItem();
 var swappedArray = getCoordinates(zipCodeItem.geometry);
-
 
 const app = new Vue({
   el: '#app',
