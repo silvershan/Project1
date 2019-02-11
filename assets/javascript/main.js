@@ -1,8 +1,8 @@
 var handler = function(event) {
 
   zipCode = $("#user-input").val();
-
-  $(".error").remove(); 
+  //returns an error if enter is pressed
+  $(".error").remove();
   if (zipCode.length < 1) {
     $('form').append('<p class="error">This field is required.</p>');
   } else {
@@ -44,7 +44,7 @@ function getZipcodeItem() {
   });
   return out;
 }
-
+//validates that input is a zip code
 function isValidZipCode(zip) {
   var isValid = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
             if (isValid) {
@@ -140,7 +140,7 @@ const app = new Vue({
       if (this.currentPolygon !== null) {
         this.map.removeLayer(this.currentPolygon);
       }
-     
+
       var polygon = L.polygon(swappedArray, {
         color: '#f2a033'
       }).addTo(this.map);
@@ -172,7 +172,7 @@ const app = new Vue({
         url: "https://gisdata.seattle.gov/server/rest/services/COS/COS_Public_Facilities_and_Safety/MapServer/8/query?where=1%3D1&outFields=*&outSR=4326&f=json",
         type: "GET",
 
-      }).done(function(data) { 
+      }).done(function(data) {
         for (var i = 0; i < app._data.layers.length; i++) {
           if (app.layers[i].name === "Elementary") {
             for (var j = 0; j < data.features.length; j++) {
@@ -248,7 +248,7 @@ const app = new Vue({
             for (var j = 0; j < data.features.length; j++) {
 
               if (data.features[j].attributes.TYPE === "Option High School") {
-     
+
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
@@ -265,7 +265,7 @@ const app = new Vue({
           } else if (app.layers[i].name === "Non Standard") {
 
             for (var j = 0; j < data.features.length; j++) {
-              if (data.features[j].attributes.TYPE === "NonStandard") {             
+              if (data.features[j].attributes.TYPE === "NonStandard") {
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
