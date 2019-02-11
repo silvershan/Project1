@@ -1,9 +1,19 @@
 .container {
-  min-width: 1000px !important;
+  background-color:transparent;
 }
 
-.map {
-  height: 600px;
+.title-header {
+  background-color: rgb(117, 117, 117);
+  text-align:center;
+  padding: 10px 0px 10px 0px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid white;
+}
+
+#map {
+  height: 700px;
+  opacity: 1;
+  border: 10px solid white;
 }
 
 #user-input {
@@ -18,7 +28,7 @@
 
 hr {
   background-color: white;
-  height: 5px !important;
+  height: 1px !important;
   opacity: 1 !important;
 }
 
@@ -39,20 +49,14 @@ label,
 }
 
 h1 {
-  font-size: 100px !important;
+  font-size: 75px !important;
   background-color: transparent !important;
   font-weight: 500 !important;
   font-family: 'Indie Flower', cursive !important;
 }
 
 h2 {
-  font-size: 50px !important;
-}
-
-
-
-div.jumbotron {
-  background: gray;
+  font-size: 40px !important;
 }
 
 div.col-md-3.map-legend {

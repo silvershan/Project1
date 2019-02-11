@@ -16,9 +16,18 @@ var handler = function(event) {
   swappedArray = getCoordinates(zipCodeItem.geometry);
 
   app.updateMap();
-  app.initLayers();
+  // app.layerChanged();
+  app.layers.forEach(layer => {
+    if (layer.active === true) {
+      layer.active = false;
+      app.layerChanged(layer.id, layer.active);
+    }
+  });
 
-}
+
+  }
+
+
 // console.log(geoJson);
 
 // Prevents user from clicking enter and reloading the map
@@ -33,11 +42,6 @@ $(document).ready(function() {
 });
 //Get's a zip code from the user
 $(document).on("click", "#add-input", handler);
-
-
- 
-    
-
 function getZipcodeItem() {
   var out;
   geoJson.features.forEach(function(zipCodeItem) {
@@ -120,7 +124,7 @@ const app = new Vue({
   mounted() { /* Code to run when app is mounted */
     this.callSchoolData();
     this.initMap();
-    this.initLayers();
+   // this.initLayers();
   },
 
   methods: { /* Functions for the map object */
@@ -154,19 +158,7 @@ const app = new Vue({
     },
 
     initLayers() {
-      this.layers.forEach((layer) => {
-        // Initialize the layer
-        const markerFeatures = layer.features.filter(feature => feature.type === 'marker');
-        const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
-        markerFeatures.forEach((feature) => {
-          feature.leafletObject = L.marker(feature.coords)
-            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "' target='_blank'>" + feature.site + "</a>")
-        });
-        polygonFeatures.forEach((feature) => {
-          feature.leafletObject = L.polygon(feature.coords)
-            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "' target='_blank'>" + feature.site + "</a>")
-        });
-      });
+      
     },
 
     layerChanged(layerId, active) {
@@ -175,11 +167,17 @@ const app = new Vue({
       layer.features.forEach((feature) => {
         /* Show or hide the feature depending on the active argument */
         if (active) {
-          feature.leafletObject.addTo(this.map);
+          if (this.currentPolygon === null || feature.type !== 'marker') return;
+          if(!this.currentPolygon.getBounds().contains(feature.coords)) return;
+          feature.leafletObject = L.marker(feature.coords)
+            .bindPopup("<div>" + feature.name + " " + feature.Type + "</div>" + "<div>Grades: " + feature.grade + "</div>" + feature.street + "<br>" + feature.phone + "<br>" + "<a href='" + feature.site + "' target='_blank'>" + feature.site + "</a>")
+            feature.leafletObject.addTo(this.map);
         } else {
+          if(!feature.leafletObject) return;
           feature.leafletObject.removeFrom(this.map);
+          feature.leafletObject = null;
         }
-      })
+      });
     },
 
     callSchoolData() { //Performing an AJAX request with the queryURL
