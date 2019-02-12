@@ -174,7 +174,6 @@ const app = new Vue({
           if (app.layers[i].name === "Elementary") {
             for (var j = 0; j < data.features.length; j++) {
               if (data.features[j].attributes.TYPE === "Elementary") {
-                //console.log(app._data.layers[i].features);
                 app._data.layers[i].features.push({
                   id: data.features[j].attributes.OBJECTID,
                   name: data.features[j].attributes.NAME,
