@@ -21,4 +21,4 @@ This API was used to display the map to the user – when integrated with the Se
 
 
 ### Link to Map:
-file:///Users/lazyrider/Documents/UW_BC_REPOS/Project1/index.html
+https://silvershan.github.io/Project1/
