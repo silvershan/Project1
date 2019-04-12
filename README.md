@@ -1,8 +1,8 @@
 # Project1
 
 ## Motivations for the Project
-* There are many schools throughout the Seattle area and it can be tough to decide where to move, especially having school-aged children
-* Our site will allow users to find information about the school based on the  zip code area where they may be looking for houses. This would help them to determine if this area is a good fit for for their needs. 
+* Problem: There are many schools throughout the Seattle area and it can be tough to decide where to move, especially having school-aged children
+* Our solution: Our site will allow users to find information about the school based on the  zip code area where they may be looking for houses. This would help them to determine if this area is a good fit for for their needs. 
 * This is important because it would allow parents to make informed decisions regarding where their children will attend school – they can contact the school with any questions, can be directed to the school site, see the location in proximity to where they may be living, etc.
 
 ## Design Process
